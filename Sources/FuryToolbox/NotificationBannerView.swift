@@ -43,14 +43,14 @@ public class NotificationBannerView: UIView {
         }
     }
 
-    public var titleFont: UIFont = UIFont.preferredFont(forTextStyle: .caption1).addingAttributes([.traits: [UIFontDescriptor.TraitKey.weight: UIFont.Weight.semibold]]) {
+    public var titleFont: UIFont = UIFont.preferredFont(forTextStyle: .caption1) {
         didSet {
             textChanged = true
             setNeedsLayout()
         }
     }
     
-    public var subtitleFont: UIFont = .preferredFont(forTextStyle: .caption1) {
+    public var subtitleFont: UIFont = .preferredFont(forTextStyle: .caption2) {
         didSet {
             textChanged = true
             setNeedsLayout()
