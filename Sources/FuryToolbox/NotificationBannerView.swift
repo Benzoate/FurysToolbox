@@ -42,15 +42,15 @@ public class NotificationBannerView: UIView {
             setNeedsLayout()
         }
     }
-    
-    public var titleFont: UIFont = .systemFont(ofSize: 14, weight: .medium) {
+
+    public var titleFont: UIFont = UIFont.preferredFont(forTextStyle: .caption1).addingAttributes([.traits: [UIFontDescriptor.TraitKey.weight: UIFont.Weight.semibold]]) {
         didSet {
             textChanged = true
             setNeedsLayout()
         }
     }
     
-    public var subtitleFont: UIFont = .systemFont(ofSize: 14, weight: .light) {
+    public var subtitleFont: UIFont = .preferredFont(forTextStyle: .caption1) {
         didSet {
             textChanged = true
             setNeedsLayout()
@@ -131,7 +131,7 @@ public class NotificationBannerView: UIView {
             shadowView.bottomAnchor.constraint(equalTo: backingView.bottomAnchor),
             
             backingTopConstraint,
-            backingView.heightAnchor.constraint(equalToConstant: 60),
+            backingView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60),
             backingView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             trailingAnchor.constraint(equalTo: backingView.trailingAnchor, constant: 0),
             bottomAnchor.constraint(equalTo: backingView.bottomAnchor, constant: 0),
@@ -146,9 +146,11 @@ public class NotificationBannerView: UIView {
             iconImageView.topAnchor.constraint(equalTo: iconImageBackingView.topAnchor),
             iconImageView.bottomAnchor.constraint(equalTo: iconImageBackingView.bottomAnchor),
             
-            titleLabel.leadingAnchor.constraint(equalTo: iconImageBackingView.trailingAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: iconImageBackingView.trailingAnchor, multiplier: 1),
             layoutMarginsGuide.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            titleLabel.topAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: topAnchor, multiplier: 1),
+            bottomAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 1)
         ])
     }
     
@@ -225,7 +227,7 @@ public class NotificationBannerView: UIView {
     private func updateTextLabel() {
         let result = NSMutableAttributedString(string: "")
         let hasTitle = title.isEmpty == false
-        let hasSubtitle = title.isEmpty == false
+        let hasSubtitle = subtitle.isEmpty == false
         
         if hasTitle {
             result.append(NSAttributedString(string: title, attributes: [.font: titleFont, .foregroundColor: titleColor]))
@@ -264,9 +266,12 @@ public class NotificationBannerView: UIView {
     private let iconImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .center
         view.tintColor = .white
         view.backgroundColor = .clear
+        view.preferredSymbolConfiguration = .init(pointSize: 17,
+                                                  weight: .regular,
+                                                  scale: UIImage.SymbolScale.large)
         return view
     }()
     
